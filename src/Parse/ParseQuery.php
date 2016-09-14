@@ -227,6 +227,21 @@ class ParseQuery
     {
         return '\\Q'.str_replace('\\E', '\\E\\\\E\\Q', $s).'\\E';
     }
+    /**
+     * Add a constraint to the query that requires a particular key's value to
+     * contain the provided value, the query is case-insensitive.
+     *
+     * @param string $key   The key to check.
+     * @param mixed  $value The substring that the value must start with.
+     *
+     * @return ParseQuery Returns this query, so you can chain this call.
+     */
+    public function contains($key, $value)
+    {
+        $this->addCondition($key, '$regex', $this->quote($value).'/i');
+
+        return $this;
+    }
 
     /**
      * Add a constraint to the query that requires a particular key's value to
@@ -268,6 +283,7 @@ class ParseQuery
     public function _getOptions()
     {
         $opts = [];
+
         if (!empty($this->where)) {
             $opts['where'] = $this->where;
         }
@@ -289,6 +305,7 @@ class ParseQuery
         if ($this->count) {
             $opts['count'] = $this->count;
         }
+        
 
         return $opts;
     }
