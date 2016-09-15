@@ -238,7 +238,7 @@ class ParseQuery
      */
     public function contains($key, $value)
     {
-        $this->addCondition($key, '$regex', $this->quote($value).'/i');
+        $this->addCondition($key, '$regex', $this->quote($value));
 
         return $this;
     }
